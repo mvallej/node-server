@@ -1,0 +1,15 @@
+{
+  "name": "tareas-node",
+  "version": "1.0.0",
+  "description": "taskList",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": " node tareas.js"
+  },
+  "author": "Maria Vallejo",
+  "license": "ISC",
+  "dependencies": {
+    "readline-sync": "^1.4.10"
+  }
+}
