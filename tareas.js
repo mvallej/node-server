@@ -1,3 +1,10 @@
+const readline = require('readline');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
 const tasks = [];
 
 function printTasks() {
@@ -48,37 +55,61 @@ function completeTask(index) {
 }
 
 
-// addTask(desayunar).then((data)=> console.log(data));
-// deleteTask(2).then((data)=> console.log(data));
 
-// console.log(addTask())
-
-rl.question('¿Qué acción deseas realizar? (add/delete/complete/exit): ', (action) => {
-  if (action === 'exit') {
-    console.log('Adiós.');
-    rl.close();
-  } else if (action === 'add') {
-    rl.question('Escribe la descripción de la tarea: ', (description) => {
-      addTask(description);
-      printTasks();
+rl.on('line', async (line) => {
+  switch (line.trim()) {
+    case '1':
+      showTasks();
+      break;
+    case '2':
+      rl.question('Introduzca la descripción de la tarea: ', async (description) => {
+        try {
+          const result = await addTask(description);
+          console.log(result);
+        } catch (error) {
+          console.error(error);
+        }
+        rl.prompt();
+      });
+      break;
+    case '3':
+      showTasks();
+      rl.question('Introduzca el índice de la tarea que desea eliminar: ', (index) => {
+        removeTask(parseInt(index) - 1)
+          .then((result) => {
+            console.log(result);
+          })
+          .catch((error) => {
+            console.error(error);
+          })
+          .finally(() => {
+            rl.prompt();
+          });
+      });
+      break;
+    case '4':
+      showTasks();
+      rl.question('Introduzca el índice de la tarea que desea marcar como completada: ', (index) => {
+        completeTask(parseInt(index) - 1)
+          .then((result) => {
+            console.log(result);
+          })
+          .catch((error) => {
+            console.error(error);
+          })
+          .finally(() => {
+            rl.prompt();
+          });
+      });
+      break;
+    case '5':
       rl.close();
-    });
-  } else if (action === 'delete') {
-    printTasks();
-    rl.question('Escribe el número de la tarea que deseas eliminar: ', (index) => {
-      deleteTask(index - 1); // Restamos 1 para ajustar al índice del array
-      printTasks();
-      rl.close();
-    });
-  } else if (action === 'complete') {
-    printTasks();
-    rl.question('Escribe el número de la tarea que deseas marcar como completada: ', (index) => {
-      completeTask(index - 1); // Restamos 1 para ajustar al índice del array
-      printTasks();
-      rl.close();
-    });
-  } else {
-    console.log('Acción no válida. Por favor, elige una acción válida.');
-    rl.close();
+      break;
+    default:
+      console.log('Opción no válida. Elija una opción válida.');
+      break;
   }
+}).on('close', () => {
+  console.log('¡Adiós!');
+  process.exit(0);
 });
