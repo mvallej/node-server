@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": " node tareas.js"
-    
+    "dev": " node tareas.js",
+    "start": "nodemon server.js"
   },
   "author": "Maria Vallejo",
   "license": "ISC",
   "dependencies": {
+    "nodemon": "^3.0.1",
     "readline-sync": "^1.4.10"
   }
 }
